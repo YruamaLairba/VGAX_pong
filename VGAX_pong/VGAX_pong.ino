@@ -68,7 +68,29 @@ void loop() {
       if(ball_y <= 0 ) ball_dir_y *= -1;
     }   
     ball_y += ball_dir_y;
-    last_millis_ball = current_millis;
+
+    //bars collision
+    if(ball_dir_x > 0)
+    {
+      if((ball_x+ IMG_BALL_WIDTH)>= (bar2_x-IMG_BAR_WIDTH))
+      {
+        if ((ball_y > bar2_y) and (ball_y < (bar2_y < (IMG_BAR_HEIGHT + 8))))
+        {
+          ball_dir_x *= -1;
+        }
+      }
+    }
+    else
+    {
+      if((ball_x <= (bar1_x + IMG_BAR_WIDTH)))
+      {
+        if((ball_y > bar1_y) and (ball_y < (bar1_y < (IMG_BAR_HEIGHT + 8))))
+        {
+          ball_dir_x *= -1;
+        } 
+      }
+    }
+    last_millis_ball = current_millis;    
   }
   
   //bars management
