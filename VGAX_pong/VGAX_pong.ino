@@ -14,6 +14,7 @@ void setup() {
 
 unsigned last_millis_bars = 0;
 unsigned last_millis_ball = 0;
+unsigned last_millis_display = 0;
 
 //bar 1 position
 const int8_t bar1_x = 0;
@@ -73,16 +74,20 @@ void loop() {
   //bars management
   if ((current_millis - last_millis_bars) >=  1)
   {
-    vga.clear(0x01);
     if( up1 == LOW and  bar1_y > 0) bar1_y--;
     if( down1 == LOW and bar1_y < (VGAX_HEIGHT - IMG_BAR_HEIGHT)) bar1_y++;
     if( up2 == LOW and  bar2_y > 0) bar2_y--;
     if( down2 == LOW and bar2_y < (VGAX_HEIGHT - IMG_BAR_HEIGHT)) bar2_y++;
-
-    vga.blit((byte*)(img_bar_data[0]), IMG_BAR_WIDTH, IMG_BAR_HEIGHT, bar1_x, bar1_y);
-    vga.blit((byte*)(img_bar_data[0]), IMG_BAR_WIDTH, IMG_BAR_HEIGHT, bar2_x, bar2_y);
-    vga.blit((byte*)(img_ball_data[0]), IMG_BALL_WIDTH, IMG_BALL_HEIGHT, ball_x, ball_y);
     last_millis_bars = current_millis;
   }
 
+  //display management
+  if ((current_millis - last_millis_display) >= 15 )
+  {
+    vga.clear(0x01); //background
+    vga.blit((byte*)(img_bar_data[0]), IMG_BAR_WIDTH, IMG_BAR_HEIGHT, bar1_x, bar1_y);
+    vga.blit((byte*)(img_bar_data[0]), IMG_BAR_WIDTH, IMG_BAR_HEIGHT, bar2_x, bar2_y);
+    vga.blit((byte*)(img_ball_data[0]), IMG_BALL_WIDTH, IMG_BALL_HEIGHT, ball_x, ball_y);
+    last_millis_display = current_millis;
+  }
 }
