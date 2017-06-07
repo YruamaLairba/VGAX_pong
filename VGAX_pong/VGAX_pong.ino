@@ -21,7 +21,7 @@ const int8_t bar1_x = 0;
 int8_t bar1_y = 0;
 
 //bar 2 position
-const int8_t bar2_x = 119;
+const int8_t bar2_x = VGAX_WIDTH -1;
 int8_t bar2_y = 0;
 
 //ball position
@@ -72,9 +72,9 @@ void loop() {
     //bars collision
     if(ball_dir_x > 0)
     {
-      if((ball_x+ IMG_BALL_WIDTH)>= (bar2_x-IMG_BAR_WIDTH))
+      if((ball_x+ IMG_BALL_WIDTH)> (bar2_x-IMG_BAR_WIDTH))
       {
-        if ((ball_y > bar2_y) and (ball_y < (bar2_y < (IMG_BAR_HEIGHT + 8))))
+        if ((ball_y + IMG_BALL_HEIGHT > bar2_y) and (ball_y < (bar2_y + IMG_BAR_HEIGHT)))
         {
           ball_dir_x *= -1;
         }
@@ -84,7 +84,7 @@ void loop() {
     {
       if((ball_x <= (bar1_x + IMG_BAR_WIDTH)))
       {
-        if((ball_y > bar1_y) and (ball_y < (bar1_y < (IMG_BAR_HEIGHT + 8))))
+        if((ball_y + IMG_BALL_HEIGHT > bar1_y) and (ball_y < (bar1_y + IMG_BAR_HEIGHT)))
         {
           ball_dir_x *= -1;
         } 
