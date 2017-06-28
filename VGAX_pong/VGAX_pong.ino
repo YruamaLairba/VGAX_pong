@@ -2,6 +2,7 @@
 
 #include "img_bar.h"
 #include "img_ball.h"
+#include "fnt_nanofont.h"
 
 VGAX vga;
 
@@ -23,6 +24,13 @@ int8_t bar1_y = 0;
 //bar 2 position
 const int8_t bar2_x = VGAX_WIDTH -1;
 int8_t bar2_y = 0;
+
+//players scores
+int8_t p1_score = 0;
+char p1_score_str[3] = "00";
+int8_t p2_score = 0;
+char p2_score_str[3] = "00";
+
 
 //ball position
 int8_t ball_x= VGAX_WIDTH/2;
@@ -56,11 +64,23 @@ void loop() {
   //vertical border collision
     if(ball_dir_x > 0)
     {
-      if(ball_x >= (VGAX_WIDTH-IMG_BALL_WIDTH)) ball_dir_x *= -1;
+      //right wall
+      if(ball_x >= (VGAX_WIDTH-IMG_BALL_WIDTH)) 
+      {
+        ball_dir_x *= -1;
+        p1_score++;
+        sprintf(p1_score_str,"%02d",p1_score);
+      }
     }
     else
     {
-      if(ball_x <= 0 ) ball_dir_x *= -1;
+      //left wall
+      if(ball_x <= 0 ) 
+      {
+        ball_dir_x *= -1;
+        p2_score++;
+        sprintf(p2_score_str,"%02d",p2_score);
+      }
     }
     ball_x += ball_dir_x;
 
@@ -108,7 +128,7 @@ void loop() {
     //if( down2 == LOW and bar2_y < (VGAX_HEIGHT - IMG_BAR_HEIGHT)) bar2_y++;
 
     //player 1 slider
-    int slider1 = analogRead(A2);
+    int slider1 = analogRead(A1);
     //player 2 slider
     int slider2 = analogRead(A2);
     bar1_y = map(slider1, 0, 1023, 0, VGAX_HEIGHT - IMG_BAR_HEIGHT);
@@ -120,9 +140,13 @@ void loop() {
   if ((current_millis - last_millis_display) >= 15 )
   {
     vga.clear(0x01); //background
+    vga.printSRAM((byte*)fnt_nanofont_data, FNT_NANOFONT_SYMBOLS_COUNT, FNT_NANOFONT_HEIGHT, 0, 0, p1_score_str, 24, 1, 3);
+    vga.printSRAM((byte*)fnt_nanofont_data, FNT_NANOFONT_SYMBOLS_COUNT, FNT_NANOFONT_HEIGHT, 0, 0, p2_score_str, 84, 1, 3);
+
     vga.blit((byte*)(img_bar_data[0]), IMG_BAR_WIDTH, IMG_BAR_HEIGHT, bar1_x, bar1_y);
     vga.blit((byte*)(img_bar_data[0]), IMG_BAR_WIDTH, IMG_BAR_HEIGHT, bar2_x, bar2_y);
     vga.blit((byte*)(img_ball_data[0]), IMG_BALL_WIDTH, IMG_BALL_HEIGHT, ball_x, ball_y);
+    
     last_millis_display = current_millis;
   }
 }
