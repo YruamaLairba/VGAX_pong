@@ -30,7 +30,7 @@ int8_t p1_score = 0;
 char p1_score_str[3] = "00";
 int8_t p2_score = 0;
 char p2_score_str[3] = "00";
-
+const int8_t score_max = 99;
 
 //ball position
 int8_t ball_x= VGAX_WIDTH/2;
@@ -68,7 +68,7 @@ void loop() {
       if(ball_x >= (VGAX_WIDTH-IMG_BALL_WIDTH)) 
       {
         ball_dir_x *= -1;
-        p1_score++;
+        if (p1_score < score_max) p1_score++;
         sprintf(p1_score_str,"%02d",p1_score);
       }
     }
@@ -78,7 +78,7 @@ void loop() {
       if(ball_x <= 0 ) 
       {
         ball_dir_x *= -1;
-        p2_score++;
+        if(p2_score < score_max) p2_score++;
         sprintf(p2_score_str,"%02d",p2_score);
       }
     }
