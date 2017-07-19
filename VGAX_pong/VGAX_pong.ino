@@ -100,20 +100,48 @@ void loop() {
     {
       if((ball_x+ IMG_BALL_WIDTH)> (bar2_x-IMG_BAR_WIDTH))
       {
-        if ((ball_y + IMG_BALL_HEIGHT > bar2_y) and (ball_y < (bar2_y + IMG_BAR_HEIGHT)))
+        if ((ball_y + IMG_BALL_HEIGHT > bar2_y) and (ball_y + IMG_BALL_HEIGHT<= bar2_y + 2))
         {
           ball_dir_x *= -1;
+          ball_dir_y = -2;
+        }
+        
+        if ((ball_y + IMG_BALL_HEIGHT > (bar2_y+2)) and (ball_y < (bar2_y - 2 + IMG_BAR_HEIGHT)))
+        {
+          ball_dir_x *= -1;
+          if (ball_dir_y < -1) ball_dir_y = -1;
+          else if (ball_dir_y > 1) ball_dir_y = 1;
+        }
+
+        if((ball_y >= (bar2_y - 2 + IMG_BAR_HEIGHT)) and (ball_y < (bar2_y  + IMG_BAR_HEIGHT)))
+        {
+          ball_dir_x *= -1;
+          ball_dir_y = 2;
         }
       }
     }
     else
     {
-      if((ball_x <= (bar1_x + IMG_BAR_WIDTH)))
+      if((ball_x)<= bar1_x)
       {
-        if((ball_y + IMG_BALL_HEIGHT > bar1_y) and (ball_y < (bar1_y + IMG_BAR_HEIGHT)))
+        if ((ball_y + IMG_BALL_HEIGHT > bar1_y) and (ball_y + IMG_BALL_HEIGHT<= bar1_y + 2))
         {
           ball_dir_x *= -1;
-        } 
+          ball_dir_y = -2;
+        }
+        
+        if ((ball_y + IMG_BALL_HEIGHT > (bar1_y+2)) and (ball_y < (bar1_y - 2 + IMG_BAR_HEIGHT)))
+        {
+          ball_dir_x *= -1;
+          if (ball_dir_y < -1) ball_dir_y = -1;
+          else if (ball_dir_y > 1) ball_dir_y = 1;
+        }
+
+        if((ball_y >= (bar1_y - 2 + IMG_BAR_HEIGHT)) and (ball_y < (bar1_y  + IMG_BAR_HEIGHT)))
+        {
+          ball_dir_x *= -1;
+          ball_dir_y = 2;
+        }
       }
     }
     last_millis_ball = current_millis;    
